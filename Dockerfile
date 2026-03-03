@@ -1,14 +1,22 @@
-# ---------- Build Stage ----------
+# -------- BUILD STAGE --------
 FROM maven:3.9.6-eclipse-temurin-21 AS builder
+
 WORKDIR /app
+
 COPY pom.xml .
 RUN mvn dependency:go-offline
+
 COPY src ./src
 RUN mvn clean package -DskipTests
 
-# ---------- Runtime Stage ----------
+
+# -------- RUNTIME STAGE --------
 FROM eclipse-temurin:21-jre
+
 WORKDIR /app
+
 COPY --from=builder /app/target/*.jar app.jar
+
 EXPOSE 8080
-ENTRYPOINT ["sh","-c","echo 'DOCKER VERSION 9999' && java -Dspring.data.mongodb.uri=$SPRING_DATA_MONGODB_URI -Dserver.port=$PORT -jar app.jar"]
+
+ENTRYPOINT ["java","-jar","app.jar"]
