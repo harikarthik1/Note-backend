@@ -11,4 +11,4 @@ FROM eclipse-temurin:21-jre
 WORKDIR /app
 COPY --from=builder /app/target/*.jar app.jar
 EXPOSE 8080
-ENTRYPOINT ["sh","-c","java -Dspring.data.mongodb.uri=$SPRING_DATA_MONGODB_URI -Dserver.port=$PORT -jar app.jar"]
+ENTRYPOINT ["sh","-c","echo 'DOCKER VERSION 9999' && java -Dspring.data.mongodb.uri=$SPRING_DATA_MONGODB_URI -Dserver.port=$PORT -jar app.jar"]
